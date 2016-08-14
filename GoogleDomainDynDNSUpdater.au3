@@ -13,17 +13,18 @@ TraySetToolTip('Gooogle Domain DynDNS Updater');
 ; Document
 ; https://support.google.com/domains/answer/6147083
 
-$externalIP = ReadURL('https://domains.google.com/checkip');
 $dyndomain = IniRead(@ScriptDir & '\GoogleDomainDynDNSUpdater.ini','setting','dyndomain','novalue');
 $username = IniRead(@ScriptDir & '\GoogleDomainDynDNSUpdater.ini','setting','username','novalue');
 $password = IniRead(@ScriptDir & '\GoogleDomainDynDNSUpdater.ini','setting','password','novalue');
 ;MsgBox(0,0,$username)
 
 While 1
+$externalIP = ReadURL('https://domains.google.com/checkip');
 $Response = ReadURL("https://"&$username&":"&$password&"@domains.google.com/nic/update?hostname="&$dyndomain&"&myip="&$externalIP)
 ;MsgBox(0,0,"DEBUG: Response from Google: " & $Response & @CRLF)
-ConsoleWrite("DEBUG: Response from Google: " & $Response & @CRLF)
-Sleep(300000);
+ConsoleWrite('Gooogle Domain DynDNS Updated at ' & _Now() & @CRLF & 'DEBUG: ' & $Response & @CRLF)
+TraySetToolTip('Gooogle Domain DynDNS Updated at ' & _Now() & @CRLF & 'DEBUG: ' & $Response & @CRLF);
+Sleep(30000);
 WEnd
 
 Func ReadURL($sURL)
